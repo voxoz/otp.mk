@@ -9,7 +9,7 @@ Overview
 
 Everyone preffer its own Erlang build solution along with its favourite BEAM language.
 We want to introduce our vision for maintaining Erlang projects. Doesn't matter you use
-raw OTP reltool or rebar/relx or even Elixir mix we whant to hide implementation of those
+raw OTP reltool or rebar/relx or even Elixir mix we want to hide implementation of those
 tools behind makefile otp.mk.
 
 Commands API
@@ -57,6 +57,19 @@ We are using reltool_server for that purposes in depman.erl.
 Also we need to fetch dependencies. We can do it manually by parsing rebar.config and performing git clone or
 running rebar/mix. We use both rebar and mix for fetching deps in mixed Elixir/Erlang projects.
 
+Building (compile, ct, dialyzer, eunit)
+---------------------------------------
+
+Each BEAM language use its own compiler, so for Elixir we need to use mix,
+for Joxa we need to use joxa and for Erlang we can use rebar or compile:file/2.
+Knowing the build order we can use OTP copmiler with infromation from reltool.
+Today we use rebar/mix for building. But things are going to change.
+
+    mix
+    joxa
+    rebar
+    compile:file/2
+
 Releasing (release, tar)
 ------------------------
 
@@ -71,19 +84,6 @@ sync or Synrc active work. relx.config is generating based on APPS RELEASE NODE 
 
 You need patching the release with relpatch.sh in order to make sync/active work.
 In development mode bundles runned with "make start" or "make console" you don't need it 
-
-Building (compile, ct, dialyzer, eunit)
----------------------------------------
-
-Each BEAM language use its own compiler, so for Elixir we need to use mix,
-for Joxa we need to use joxa and for Erlang we can use rebar or compile:file/2.
-Knowing the build order we can use OTP copmiler with infromation from reltool.
-Today we use rebar/mix for building. But things are going to change.
-
-    mix
-    joxa
-    rebar
-    compile:file/2
 
 Controlling (start, stop, console, attach)
 ------------------------------------------
