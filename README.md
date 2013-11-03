@@ -1,7 +1,7 @@
 otp.mk
 ======
 
-Tiny Makefile-based Erlang/OTP and reltool/relx/rebar compatible build solution.
+Tiny Makefile-based Erlang/OTP and reltool/relx/rebar/mix compatible build solution.
 
 Prerequisites in PATH
 ---------------------
@@ -35,8 +35,7 @@ TODO
 ----
 
 1. mix support
-2. erlc support for rebar.config
-3. git clone support for rebar config
+2. rebar.config compatible rebar replacement
 
 Credits
 -------
