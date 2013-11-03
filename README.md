@@ -2,6 +2,7 @@ otp.mk
 ======
 
 Tiny Makefile-based Erlang/OTP and reltool/relx/rebar/mix compatible build solution.
+Today otp.mk costs us 42 LOC and depman.erl 30 LOC and we want to keep that size.
 
 Overview
 --------
@@ -17,7 +18,7 @@ Architecture
 Resolving Dependencies
 ----------------------
 
-There are severals way to do so: using rebar.config, using mix.exs or using information
+There are severals way to go for it: using rebar.config, using mix.exs or using information
 based on *.app.src files. Basic resolving neeeded for determinig correct order of
 application:start(App) for launching release in developer mode.
 We are using reltool_server for that purposes in depman.erl.
@@ -26,29 +27,36 @@ We are using reltool_server for that purposes in depman.erl.
     mix
     reltool
 
+Also we need to fetch dependencies. We can do it manually by parsing rebar.config and performing git clone or
+running rebar or mix. We use both rebar and mix for fetching deps in mixed Elixir/Erlang projects.
+
 Releasing
 ---------
 
 We support all ways of releasing, but for keeping simple we have chosen relx by Eric Merritt.
 In case you are using raw "rebar -f generate" or "relx" releasing in development mode you should
-substitute all ebin folder with symlinks to appropriate ebin in apps/deps folder to make Rusty's sync work.
-relx.config is generating based on APPS RELEASE NODE COOKIE information.
+substitute all ebin folder with symlinks to appropriate ebin in apps/deps folder to make Rusty's
+sync or Synrc active work. relx.config is generating based on APPS RELEASE NODE COOKIE information.
 
     relx
     rebar -f generate
     reltool
+
+You need patching the release with release_sync.sh in order to make sync/active work.
+In development mode bundles runned with "make start" or "make console" you don't need it 
 
 Building
 --------
 
 Each Erlang language use its own compiler, so for Elixir we need to use mix,
 for Joxa we need to use joxa and for Erlang we can use rebar or raw erlc. Knowing the build
-order we can use raw erlc using reltool tree.
+order we can use raw erlc using reltool tree. Today we use rebar/mix for building.
+But things could change.
 
     mix
     joxa
     rebar
-    erlc
+    compile:file/2
 
 Variables
 ---------
@@ -94,17 +102,12 @@ Commands
 
 See real example of usage in https://github.com/5HT/skyline
 
-TODO
-----
-
-1. mix support
-2. rebar.config compatible rebar replacement
-
 Credits
 -------
 
 * Vladimir Kirillov
 * Maxim Sokhatsky
 * Max Treskin
+* Peter Bruinsma
 
 OM A HUM
