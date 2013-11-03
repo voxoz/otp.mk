@@ -1,11 +1,11 @@
 APPS := web active amqp_client avz cowboy erlydtl gproc kai kvs lager mimetypes mqs n2o oauth rabbit_common ranch sync
 ERL_ARGS := -args_file rels/web/files/vm.args -config rels/web/files/sys.config
-N2O := deps/n2o/priv/static
-FILES := apps/web/priv/static/n2o
-BOOTSTRAP := apps/web/priv/static/bootstrap
-FONTAWESOME := apps/web/priv/static/font-awesome
-MCE := apps/web/priv/static/tinymce
-LESSJS := apps/web/priv/static/less
+N2O          := deps/n2o/priv/static
+FILES        := apps/web/priv/static/n2o
+BOOTSTRAP    := apps/web/priv/static/bootstrap
+FONTAWESOME  := apps/web/priv/static/font-awesome
+MCE          := apps/web/priv/static/tinymce
+LESSJS       := apps/web/priv/static/less
 
 default: compile static-link
 
