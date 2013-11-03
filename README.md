@@ -29,8 +29,9 @@ See real example of usage in https://github.com/5HT/skyline
 TODO
 ----
 
-1. Raw erlc support from rebar.config
-2. Raw git clone support from rebar config
+1. mix support
+2. erlc support for rebar.config
+3. git clone support for rebar config
 
 Credits
 -------
