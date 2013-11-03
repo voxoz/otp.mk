@@ -41,8 +41,8 @@ open to discuss best practice for resolving dependedcies, building and releasing
 Erlang application bundles. One thing we should remember that our main
 criteria is small size of otp.mk and clear design.
 
-Resolving (get, update-deps, clean)
------------------------------------
+Resolving (get, update, clean)
+------------------------------
 
 There are severals way to resolve dependencies: using rebar.config,
 using mix.exs or using information based on *.app.src files.
