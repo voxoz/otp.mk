@@ -26,5 +26,5 @@ static-link:
 	ln -sf ../../../../deps/n2o/priv/static/font-awesome $(FONTAWESOME)
 	ln -sf ../../../../deps/n2o/priv/static/less $(LESSJS)
 
-include synrc.mk
+include otp.mk
 
