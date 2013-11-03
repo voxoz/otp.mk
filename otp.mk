@@ -4,6 +4,9 @@ REBAR ?= $(or $(shell which rebar 2>/dev/null),./rebar)
 SRC_APP_DIR_ROOTS ?= apps deps
 ERL_LIBS := $(subst $(space),:,$(SRC_APP_DIR_ROOTS))
 
+release: compile
+console: compile
+start: compile
 compile: get-deps
 get-deps compile clean:
 	$(REBAR) $@
