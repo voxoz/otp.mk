@@ -1,3 +1,5 @@
+RELEASE := skyline
+COOKIE := node_runner
 APPS := web active amqp_client avz cowboy erlydtl gproc kai kvs lager mimetypes mqs n2o oauth rabbit_common ranch sync
 ERL_ARGS := -args_file rels/web/files/vm.args -config rels/web/files/sys.config
 RUN_DIR ?= ./rels/web/devbox

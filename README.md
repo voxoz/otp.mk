@@ -15,14 +15,15 @@ Prerequisites in PATH
 Commands
 --------
 
-    make get-deps	Get-Deps from rebar.config
-    make [compile]	Compile Dependencies with rebar
-    make .applist	Generate Applications List
-    make clean		Clean BEAM Files
-    make console	Run Apps in Dev Mode Console
-    make start		Start bundle with run_erl in Dev Mode
-    make attach		Attach to bundle with to_erl in Dev Mode
-    make release	Build Release with relx
+    make get-deps		Get-Deps from rebar.config
+    make update-deps	Update-Deps from rebar.config
+    make [compile]		Compile Dependencies with rebar
+    make .applist		Generate Applications List
+    make clean			Clean BEAM Files
+    make console		Run Apps in Dev Mode Console
+    make start			Start bundle with run_erl in Dev Mode
+    make attach			Attach to bundle with to_erl in Dev Mode
+    make release		Build Release with relx
 
 See real example of usage in https://github.com/5HT/skyline
 
