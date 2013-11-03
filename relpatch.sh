@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Warning for Mac users: bash 4.0 needed
+# This is optional script for patching live releases in order to make active/sync work.
 
 wd=`pwd`
 appss=( "rels/web/node/lib/n2o_sample-*" "rels/web/node/lib/n2o-*")

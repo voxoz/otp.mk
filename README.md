@@ -41,11 +41,12 @@ open to discuss best practice for resolving dependedcies, building and releasing
 Erlang application bundles. One thing we should remember that our main
 criteria is small size of otp.mk and clear design.
 
-Resolving Dependencies (get-deps, delete-deps, update-deps, clean, .applist)
-----------------------------------------------------------------------------
+Resolving (get, update-deps, clean)
+-----------------------------------
 
-There are severals way to go for it: using rebar.config, using mix.exs or using information
-based on *.app.src files. Basic resolving neeeded for determinig correct order of
+There are severals way to resolve dependencies: using rebar.config,
+using mix.exs or using information based on *.app.src files.
+Basic resolving neeeded for determinig correct order of
 application:start(App) for launching release in developer mode.
 We are using reltool_server for that purposes in depman.erl.
 
