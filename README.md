@@ -12,8 +12,8 @@ We want to introduce our vision for maintaining Erlang projects. Doesn't matter 
 raw OTP reltool or rebar/relx or even Elixir mix we whant to hide implementation of those
 tools behind makefile otp.mk.
 
-Commands
---------
+Commands API
+============
 
 Frontend commands
 
@@ -33,16 +33,16 @@ Frontend commands
 
 These commands also could be accessed via REST API in Voxoz CI LXC.
 
-Backends Architecture
-=====================
+Backends
+========
 
 We cannot guarantee that underlying backends would be fixed. However we are
 open to discuss best practice for resolving dependedcies, building and releasing
 Erlang application bundles. One thing we should remember that our main
 criteria is small size of otp.mk and clear design.
 
-Resolving Dependencies
-----------------------
+Resolving Dependencies (get-deps, delete-deps, update-deps, clean, .applist)
+----------------------------------------------------------------------------
 
 There are severals way to go for it: using rebar.config, using mix.exs or using information
 based on *.app.src files. Basic resolving neeeded for determinig correct order of
@@ -56,8 +56,8 @@ We are using reltool_server for that purposes in depman.erl.
 Also we need to fetch dependencies. We can do it manually by parsing rebar.config and performing git clone or
 running rebar/mix. We use both rebar and mix for fetching deps in mixed Elixir/Erlang projects.
 
-Releasing
----------
+Releasing (release, tar)
+------------------------
 
 We support all ways of releasing, but for keeping simple we have chosen high-level tool relx by Eric Merritt.
 In case you are using raw "rebar -f generate" or "relx" releasing in development mode you should
@@ -68,11 +68,11 @@ sync or Synrc active work. relx.config is generating based on APPS RELEASE NODE 
     rebar -f generate
     reltool
 
-You need patching the release with release_sync.sh in order to make sync/active work.
+You need patching the release with relpatch.sh in order to make sync/active work.
 In development mode bundles runned with "make start" or "make console" you don't need it 
 
-Building
---------
+Building (compile, ct, dialyzer, eunit)
+---------------------------------------
 
 Each BEAM language use its own compiler, so for Elixir we need to use mix,
 for Joxa we need to use joxa and for Erlang we can use rebar or compile:file/2.
@@ -83,6 +83,22 @@ Today we use rebar/mix for building. But things are going to change.
     joxa
     rebar
     compile:file/2
+
+Controlling (start, stop, console, attach)
+------------------------------------------
+
+There are two modes you can run application bundles.
+
+* **Development Mode** when you can inject modules into the running system,
+handle code changes, staring using raw application:start/1. In that mode you can use
+make start/stop/console/attach. Currently otp.mk uses the same way provided by
+release tools for attaching remote nodes with pipes: to_erl/run_erl.
+
+* **Release Mode** when you run application bundle as OTP release with
+its own boot loader script usually made with relx or rebar -f generate.
+If you want git pull updates for code using active/sync file system
+watchers you need to patch releases with relpatch.sh. In that mode use nodetool
+script generated with release manager. Currently otp.mk uses relx.
 
 Variables
 ---------
@@ -108,7 +124,6 @@ Prerequisites in PATH
     relx
     to_erl
     run_erl
-
 
 See real example of usage in https://github.com/5HT/skyline
 
