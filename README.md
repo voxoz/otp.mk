@@ -24,6 +24,10 @@ Commands
     make start			Start bundle with run_erl in Dev Mode
     make attach			Attach to bundle with to_erl in Dev Mode
     make release		Build Release with relx
+    make dialyzer		Run OTP Dializer
+    make tar			Pack relx relase without ERTS
+    make ct				Run Common Test suite
+    make eunit			Run eunit
 
 See real example of usage in https://github.com/5HT/skyline
 
@@ -39,5 +43,6 @@ Credits
 
 * Vladimir Kirillov
 * Maxim Sokhatsky
+* Max Treskin
 
 OM A HUM
