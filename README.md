@@ -7,9 +7,9 @@ Today otp.mk costs us 42 LOC and depman.erl 30 LOC and we want to keep that size
 Overview
 --------
 
-Everyone preffer its own Erlang build solution along with its favourite Erlang language.
+Everyone preffer its own Erlang build solution along with its favourite BEAM language.
 We want to introduce our vision for maintaining Erlang projects. Doesn't matter you use
-pure OTP reltool or rebar/relx or even Elixir mix we whant to hide implementation of those
+raw OTP reltool or rebar/relx or even Elixir mix we whant to hide implementation of those
 tools behind makefile otp.mk.
 
 Architecture
@@ -28,12 +28,12 @@ We are using reltool_server for that purposes in depman.erl.
     reltool
 
 Also we need to fetch dependencies. We can do it manually by parsing rebar.config and performing git clone or
-running rebar or mix. We use both rebar and mix for fetching deps in mixed Elixir/Erlang projects.
+running rebar/mix. We use both rebar and mix for fetching deps in mixed Elixir/Erlang projects.
 
 Releasing
 ---------
 
-We support all ways of releasing, but for keeping simple we have chosen relx by Eric Merritt.
+We support all ways of releasing, but for keeping simple we have chosen high-level tool relx by Eric Merritt.
 In case you are using raw "rebar -f generate" or "relx" releasing in development mode you should
 substitute all ebin folder with symlinks to appropriate ebin in apps/deps folder to make Rusty's
 sync or Synrc active work. relx.config is generating based on APPS RELEASE NODE COOKIE information.
@@ -48,10 +48,10 @@ In development mode bundles runned with "make start" or "make console" you don't
 Building
 --------
 
-Each Erlang language use its own compiler, so for Elixir we need to use mix,
-for Joxa we need to use joxa and for Erlang we can use rebar or raw erlc. Knowing the build
-order we can use raw erlc using reltool tree. Today we use rebar/mix for building.
-But things could change.
+Each BEAM language use its own compiler, so for Elixir we need to use mix,
+for Joxa we need to use joxa and for Erlang we can use rebar or compile:file/2.
+Knowing the build order we can use OTP copmiler with infromation from reltool.
+Today we use rebar/mix for building. But things are going to change.
 
     mix
     joxa
@@ -105,7 +105,7 @@ See real example of usage in https://github.com/5HT/skyline
 Credits
 -------
 
-* Vladimir Kirillov
+* Vladimir Kirillov -- main author
 * Maxim Sokhatsky
 * Max Treskin
 * Peter Bruinsma
