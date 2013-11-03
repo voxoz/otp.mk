@@ -1,17 +1,28 @@
-synrc.mk
-========
+otp.mk
+======
 
-Makefile-based Erlang/OTP and reltool/relx compatible build solution that can use rebar also for deps/compilation.
+Tiny Makefile-based Erlang/OTP and reltool/relx/rebar compatible build solution.
+
+Prerequisites in PATH
+---------------------
+
+    make
+    relx
+    rebar
+    to_erl
+    run_erl
 
 Commands
 --------
 
-    make .applist
-    make [compile]
-    make console
-    make start
-    make attach
-    make release
+    make get-deps	Get-Deps from rebar.config
+    make [compile]	Compile Dependencies with rebar
+    make .applist	Generate Applications List
+    make clean		Clean BEAM Files
+    make console	Run Apps in Dev Mode Console
+    make start		Start bundle with run_erl in Dev Mode
+    make attach		Attach to bundle with to_erl in Dev Mode
+    make release	Build Release with relx
 
 See real example of usage in https://github.com/5HT/skyline
 
@@ -25,5 +36,6 @@ Credits
 -------
 
 Vladimir Kirillov
+Maxim Sokhatsky
 
 OM A HUM
