@@ -36,7 +36,7 @@ TODO
 Credits
 -------
 
-Vladimir Kirillov
-Maxim Sokhatsky
+* Vladimir Kirillov
+* Maxim Sokhatsky
 
 OM A HUM
