@@ -8,6 +8,8 @@ Makefile-based Erlang/OTP and reltool compatible build solution that can use reb
     make console
     make attach
     
+See real example of usage in https://github.com/5HT/skyline
+    
 TODO:
 
 1. Raw erlc support
