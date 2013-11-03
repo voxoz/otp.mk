@@ -1,19 +1,25 @@
 synrc.mk
 ========
 
-Makefile-based Erlang/OTP and reltool compatible build solution that can use rebar also.
+Makefile-based Erlang/OTP and reltool/relx compatible build solution that can use rebar also for deps/compilation.
+
+Commands
+--------
 
     make .applist
-    make 
+    make [compile]
     make console
+    make start
     make attach
-    
-See real example of usage in https://github.com/5HT/skyline
-    
-TODO:
+    make release
 
-1. Raw erlc support
-2. Relx support
+See real example of usage in https://github.com/5HT/skyline
+
+TODO
+----
+
+1. Raw erlc support from rebar.config
+2. Raw git clone support from rebar config
 
 Credits
 -------
