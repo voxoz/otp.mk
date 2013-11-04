@@ -15,7 +15,6 @@ MCE          := apps/web/priv/static/tinymce
 LESSJS       := apps/web/priv/static/less
 
 default: compile static-link
-
 static-link:
 	rm -rf $(N2O)
 	rm -rf $(FILES)
