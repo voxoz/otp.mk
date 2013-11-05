@@ -113,18 +113,23 @@ Variables
     LOG_DIR     -- logs
     ROOTS       -- apps deps
 
-Prerequisites in PATH
----------------------
+Prerequisites
+-------------
 
-    joxa
-    elixir
-    erlc
-    mix
-    rebar
-    make
-    relx
-    to_erl
-    run_erl
+* GNU make (BSD users have to use `gmake` instead of `make`)
+* $PATH should contain:
+
+```
+joxa
+elixir
+erlc
+mix
+rebar
+make
+relx
+to_erl
+run_erl
+```
 
 See real example of usage in https://github.com/5HT/skyline
 
