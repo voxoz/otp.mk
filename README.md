@@ -18,7 +18,7 @@ Commands API
 Frontend commands
 
     make get-deps		Get-Deps from rebar.config
-    make update-deps	Update-Deps from rebar.config
+    make update-deps		Update-Deps from rebar.config
     make [compile]		Compile Dependencies with rebar
     make .applist		Generate Applications List
     make clean			Clean BEAM Files
@@ -28,7 +28,7 @@ Frontend commands
     make release		Build Release with relx
     make dialyzer		Run OTP Dializer
     make tar			Pack relx relase without ERTS
-    make ct				Run Common Test suite
+    make ct			Run Common Test suite
     make eunit			Run eunit
 
 These commands also could be accessed via REST API in Voxoz CI LXC.
