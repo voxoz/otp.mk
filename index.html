@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="OTP.MK : Erlang Tools with Makefile API" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>OTP.MK</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/synrc/otp.mk">View on GitHub</a>
+
+          <h1 id="project_title">OTP.MK</h1>
+          <h2 id="project_tagline">Erlang Tools with Makefile API</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/synrc/otp.mk/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/synrc/otp.mk/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="otpmk" class="anchor" href="#otpmk"><span class="octicon octicon-link"></span></a>otp.mk</h1>
+
+<p>Tiny Makefile-based Erlang/OTP and reltool/relx/rebar/mix compatible build solution.
+Today otp.mk costs us 42 LOC and depman.erl 30 LOC and we want to keep that size.</p>
+
+<h2>
+<a name="overview" class="anchor" href="#overview"><span class="octicon octicon-link"></span></a>Overview</h2>
+
+<p>Everyone preffer its own Erlang build solution along with its favourite BEAM language.
+We want to introduce our vision for maintaining Erlang projects. Doesn't matter you use
+raw OTP reltool or rebar/relx or even Elixir mix we want to hide implementation of those
+tools behind makefile otp.mk.</p>
+
+<h1>
+<a name="commands-api" class="anchor" href="#commands-api"><span class="octicon octicon-link"></span></a>Commands API</h1>
+
+<p>Frontend commands</p>
+
+<pre><code>make get-deps       Get-Deps from rebar.config
+make update-deps        Update-Deps from rebar.config
+make [compile]      Compile Dependencies with rebar
+make .applist       Generate Applications List
+make clean          Clean BEAM Files
+make console        Run Apps in Dev Mode Console
+make start          Start bundle with run_erl in Dev Mode
+make attach         Attach to bundle with to_erl in Dev Mode
+make release        Build Release with relx
+make dialyzer       Run OTP Dializer
+make tar            Pack relx relase without ERTS
+make ct         Run Common Test suite
+make eunit          Run eunit
+</code></pre>
+
+<p>These commands also could be accessed via REST API in Voxoz CI LXC.</p>
+
+<h1>
+<a name="backends" class="anchor" href="#backends"><span class="octicon octicon-link"></span></a>Backends</h1>
+
+<p>We cannot guarantee that underlying backends would be fixed. However we are
+open to discuss best practice for resolving dependedcies, building and releasing
+Erlang application bundles. One thing we should remember that our main
+criteria is small size of otp.mk and clear design.</p>
+
+<h2>
+<a name="resolving-get-update-clean" class="anchor" href="#resolving-get-update-clean"><span class="octicon octicon-link"></span></a>Resolving (get, update, clean)</h2>
+
+<p>There are severals way to resolve dependencies: using rebar.config,
+using mix.exs or using information based on *.app.src files.
+Basic resolving neeeded for determinig correct order of
+application:start(App) for launching release in developer mode.
+We are using reltool_server for that purposes in depman.erl.</p>
+
+<pre><code>rebar
+mix
+reltool
+</code></pre>
+
+<p>Also we need to fetch dependencies. We can do it manually by parsing rebar.config and performing git clone or
+running rebar/mix. We use both rebar and mix for fetching deps in mixed Elixir/Erlang projects.</p>
+
+<h2>
+<a name="building-compile-ct-dialyzer-eunit" class="anchor" href="#building-compile-ct-dialyzer-eunit"><span class="octicon octicon-link"></span></a>Building (compile, ct, dialyzer, eunit)</h2>
+
+<p>Each BEAM language use its own compiler, so for Elixir we need to use mix,
+for Joxa we need to use joxa and for Erlang we can use rebar or compile:file/2.
+Knowing the build order we can use OTP copmiler with infromation from reltool.
+Today we use rebar/mix for building. But things are going to change.</p>
+
+<pre><code>mix
+joxa
+rebar
+compile:file/2
+</code></pre>
+
+<h2>
+<a name="releasing-release-tar" class="anchor" href="#releasing-release-tar"><span class="octicon octicon-link"></span></a>Releasing (release, tar)</h2>
+
+<p>We support all ways of releasing, but for keeping simple we have chosen high-level tool relx by Eric Merritt.
+In case you are using raw "rebar -f generate" or "relx" releasing in development mode you should
+substitute all ebin folder with symlinks to appropriate ebin in apps/deps folder to make Rusty's
+sync or Synrc active work. relx.config is generating based on APPS RELEASE NODE COOKIE information.</p>
+
+<pre><code>relx
+rebar -f generate
+reltool
+</code></pre>
+
+<p>You need patching the release with relpatch.sh in order to make sync/active work.
+In development mode bundles runned with "make start" or "make console" you don't need it </p>
+
+<h2>
+<a name="controlling-start-stop-console-attach" class="anchor" href="#controlling-start-stop-console-attach"><span class="octicon octicon-link"></span></a>Controlling (start, stop, console, attach)</h2>
+
+<p>There are two modes you can run application bundles.</p>
+
+<ul>
+<li><p><strong>Development Mode</strong> when you can inject modules into the running system,
+handle code changes, staring using raw application:start/1. In that mode you can use
+make start/stop/console/attach. Currently otp.mk uses the same way provided by
+release tools for attaching remote nodes with pipes: to_erl/run_erl.</p></li>
+<li><p><strong>Release Mode</strong> when you run application bundle as OTP release with
+its own boot loader script usually made with relx or rebar -f generate.
+If you want git pull updates for code using active/sync file system
+watchers you need to patch releases with relpatch.sh. In that mode use nodetool
+script generated with release manager. Currently otp.mk uses relx.</p></li>
+</ul><h2>
+<a name="variables" class="anchor" href="#variables"><span class="octicon octicon-link"></span></a>Variables</h2>
+
+<pre><code>APPS        -- n2o n2o_sample cowboy erlydtl ranch gproc mimetypes
+RELEASE     -- unirel
+NODE        -- node@localhost
+COOKIE      -- secret
+ERL_ARGS    -- -args_file vm.args -config sys.config
+RUN_DIR     -- .
+LOG_DIR     -- logs
+ROOTS       -- apps deps
+</code></pre>
+
+<h2>
+<a name="prerequisites" class="anchor" href="#prerequisites"><span class="octicon octicon-link"></span></a>Prerequisites</h2>
+
+<ul>
+<li>GNU make (BSD users have to use <code>gmake</code> instead of <code>make</code>)</li>
+<li>$PATH should contain:</li>
+</ul><pre><code>joxa
+elixir
+erlc
+mix
+rebar
+make
+relx
+to_erl
+run_erl
+</code></pre>
+
+<p>See real example of usage in <a href="https://github.com/5HT/skyline">https://github.com/5HT/skyline</a></p>
+
+<h2>
+<a name="credits" class="anchor" href="#credits"><span class="octicon octicon-link"></span></a>Credits</h2>
+
+<ul>
+<li>Vladimir Kirillov -- main author</li>
+<li>Maxim Sokhatsky</li>
+<li>Max Treskin</li>
+<li>Peter Bruinsma</li>
+</ul><p>OM A HUM</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">OTP.MK maintained by <a href="https://github.com/synrc">synrc</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
