@@ -7,7 +7,7 @@ Today otp.mk costs us 42 LOC and depman.erl 30 LOC and we want to keep that size
 Overview
 --------
 
-Everyone preffer its own Erlang build solution along with its favourite BEAM language.
+Everyone prefer its own Erlang build solution along with its favourite BEAM language.
 We want to introduce our vision for maintaining Erlang projects. Doesn't matter you use
 raw OTP reltool or rebar/relx or even Elixir mix we want to hide implementation of those
 tools behind makefile otp.mk.
@@ -37,16 +37,16 @@ Backends
 ========
 
 We cannot guarantee that underlying backends would be fixed. However we are
-open to discuss best practice for resolving dependedcies, building and releasing
+open to discuss best practice for resolving dependencies, building and releasing
 Erlang application bundles. One thing we should remember that our main
 criteria is small size of otp.mk and clear design.
 
 Resolving (get, update, clean)
 ------------------------------
 
-There are severals way to resolve dependencies: using rebar.config,
+There are several way to resolve dependencies: using rebar.config,
 using mix.exs or using information based on *.app.src files.
-Basic resolving neeeded for determinig correct order of
+Basic resolving needed for determining correct order of
 application:start(App) for launching release in developer mode.
 We are using reltool_server for that purposes in depman.erl.
 
@@ -62,7 +62,7 @@ Building (compile, ct, dialyzer, eunit)
 
 Each BEAM language use its own compiler, so for Elixir we need to use mix,
 for Joxa we need to use joxa and for Erlang we can use rebar or compile:file/2.
-Knowing the build order we can use OTP copmiler with infromation from reltool.
+Knowing the build order we can use OTP copmiler with information from reltool.
 Today we use rebar/mix for building. But things are going to change.
 
     mix
