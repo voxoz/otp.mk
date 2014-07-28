@@ -16,8 +16,11 @@ relx     := "{release,{$(RELEASE),\"$(VER)\"},[$(RELEASE)]}.\\n{include_erts,tru
 \\n{vm_args,\"$(VM)\"}.\\n{overlay,[{mkdir,\"log/sasl\"}]}."
 
 test: eunit ct
-compile: get-deps static-link
-delete-deps get-deps compile clean update-deps:
+compile: get-deps
+delete-deps get-deps compile update-deps:
+	rebar $@
+clean:
+	rm -f .applist
 	rebar $@
 .applist:
 	$(eval APPS := $(subst deps/,,$(subst apps/,,$(shell find apps deps -maxdepth 1 -mindepth 1 -type d))))
@@ -25,7 +28,7 @@ delete-deps get-deps compile clean update-deps:
 $(RUN_DIR) $(LOG_DIR):
 	mkdir -p $(RUN_DIR) & mkdir -p $(LOG_DIR)
 console: .applist
-	ERL_LIBS=$(ERL_LIBS) erl $(ERL_ARGS) -eval '[application:start(A) || A <- $(shell cat .applist)]'
+	ERL_LIBS=$(ERL_LIBS) erl +pc unicode $(ERL_ARGS) -eval '[application:start(A) || A <- $(shell cat .applist)]'
 start: $(RUN_DIR) $(LOG_DIR) .applist
 	RUN_ERL_LOG_GENERATIONS=1000 RUN_ERL_LOG_MAXSIZE=20000000 \
 	ERL_LIBS=$(ERL_LIBS) run_erl -daemon $(RUN_DIR)/ $(LOG_DIR)/ "exec $(MAKE) console"
